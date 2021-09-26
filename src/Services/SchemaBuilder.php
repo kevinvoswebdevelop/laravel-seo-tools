@@ -9,6 +9,7 @@ namespace SEO\Services;
 
 
 use Illuminate\Support\Collection;
+use SEO\Models\Page;
 use SEO\Models\Setting;
 
 class SchemaBuilder
@@ -29,43 +30,68 @@ class SchemaBuilder
     /**
      * @return null|string
      */
-    public function ownership()
+    public function ownership(Page $page)
     {
-        $info = $this->buildOwnerShip();
+        $info = $this->buildOwnerShip($page);
         return !empty($info) ? json_encode($info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : null;
     }
 
     /**
      * @return array|void
      */
-    private function buildOwnerShip()
+    private function buildOwnerShip(Page $page)
     {
         $arr = [];
+        $arr['@context'] = 'https://schema.org';
 
+        $graphs = [];
+
+        // Person / Organization
         if (!empty($this->settings['ownership_type'])) {
-            $arr['@context'] = 'https://schema.org';
-            $arr['@type'] = $this->settings['ownership_type'];
-            $arr['name'] = $this->settings['ownership_name'];
-            $arr['url'] = $this->settings['ownership_url'];
-            $arr = $this->logo($arr);
-
+            $ownershipGraph = [];
+            $ownershipGraph['@type'] = $this->settings['ownership_type'];
+            $ownershipGraph['name'] = $this->settings['ownership_name'];
+            $ownershipGraph['url'] = $this->settings['ownership_url'];
+            $ownershipGraph['aggregateRating'] = [
+                '@type' => 'AggregateRating',
+                'ratingValue' => $this->settings['review_rating_value'] ?? 5,
+                'reviewCount' => $this->settings['review_count'] ?? 100,
+                'worstRating' => $this->settings['review_worst_rating'] ?? 1,
+                'bestRating' => $this->settings['review_best_rating'] ?? 5
+            ];
+            $ownershipGraph = $this->logo($ownershipGraph);
             if (!empty($this->settings['ownership_address'])) {
-                $arr['address'] = $this->settings['ownership_address'];
+                $ownershipGraph['address'] = $this->settings['ownership_address'];
             }
             if (!empty($this->settings['ownership_email']) && filter_var($this->settings['ownership_email'], FILTER_VALIDATE_EMAIL)) {
-                $arr['email'] = $this->settings['ownership_email'];
+                $ownershipGraph['email'] = $this->settings['ownership_email'];
             }
-
-            $arr['sameAs'] = $this->getSocialMediaLinks();
-            $arr = $this->telephone($arr);
-
-
+            $ownershipGraph['sameAs'] = $this->getSocialMediaLinks();
+            $ownershipGraph = $this->telephone($ownershipGraph);
+            $graphs[] = $ownershipGraph;
         }
+
+        // Article
+        $articleGraph = $this->buildArticle($page);
+        if (!empty($articleGraph)) {
+            $graphs[] = $articleGraph;
+        }
+
+        // TODO: Breadcrumbs
+
+        // Faq
+        $faqGraph = $this->buildFaq($page);
+        if (!empty($faqGraph)) {
+            $graphs[] = $faqGraph;
+        }
+
+        $arr['@graph'] = $graphs;
+
         return $arr;
     }
 
     /**
-     *
+     * @return array
      */
     private function getSocialMediaLinks()
     {
@@ -117,5 +143,101 @@ class SchemaBuilder
         return $arr;
     }
 
+    /**
+     * @param Page $page
+     * @return array
+     */
+    private function buildArticle(Page $page)
+    {
+        $article = [];
+        if (!empty($page->getTitle()) && !empty($page->getDescription()) && !empty($this->settings['ownership_type'])) {
+            $article["@type"] = "Article";
+            $article["mainEntityOfPage"] = [
+                "@type" => "WebPage",
+                "@id" => $page->getFullUrl()
+            ];
+            $article["headline"] = $page->getTitle();
+            $article["description"] = $page->getDescription();
+            $article["image"] = $page->pageImages()->first()->getSrc();
+            $article["author"] = [
+                "@type" => $this->settings['ownership_type'],
+                "name" => $this->settings['ownership_name'],
+                "url" => $this->settings['ownership_url']
+            ];
+            $article["publisher"] = [
+                "@type" => $this->settings['ownership_type'],
+                "name" => $this->settings['ownership_name']
+            ];
+            if (isset($this->settings['ownership_logo']) && !empty($this->settings['ownership_logo']) && filter_var($this->settings['ownership_logo'], FILTER_VALIDATE_URL)) {
+                $article["publisher"]["logo"] = [
+                    "@type" => "ImageObject",
+                    "url" => $this->settings['ownership_logo']
+                ];
+            }
+            $article["datePublished"] = $page->getCreatedDate();
+            $article["dateModified"] = $page->getLastModifiedDate();
+        }
+        return $article;
+    }
+
+    /**
+     * @param Page $page
+     * @return array
+     */
+    private function buildBreadcrumbs(Page $page)
+    {
+        $breadcrumbs = [];
+        if (!empty($page->getTitle()) && !empty($page->getDescription()) && !empty($this->settings['ownership_type'])) {
+            $breadcrumbs = [];
+            // TODO: implement/depent on https://github.com/davejamesmiller/laravel-breadcrumbs
+        }
+        return $breadcrumbs;
+    }
+
+    /**
+     * @param Page $page
+     * @return array
+     */
+    private function buildFaq(Page $page)
+    {
+        /**
+         * {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [{
+                "@type": "Question",
+                "name": "ddd",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "ddd"
+                }
+                },{
+                "@type": "Question",
+                "name": "",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": ""
+                }
+            }]
+        }
+         */
+        $faq = [
+            "@type" => "FAQPage",
+            "mainEntity" => []
+        ];
+        for($i = 0; $i < 10; $i++) {
+            if (!empty($this->settings['faq_question_'.$i]) && !empty($this->settings['faq_answer_'.$i])) {
+                $faq["mainEntity"][] = [
+                    "@type" => "Question",
+                    "name" => $this->settings['faq_question_'.$i],
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => $this->settings['faq_answer_'.$i]
+                    ]
+                ];
+            }
+        }
+        return count($faq["mainEntity"]) ? $faq : [];
+    }
 
 }

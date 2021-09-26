@@ -158,7 +158,7 @@ class Tag
     public function schemaJsonLd()
     {
         $script = '';
-        $json = (new SchemaBuilder())->ownership();
+        $json = (new SchemaBuilder())->ownership($this->page);
         if (!empty($json)) {
             $script = '<script type="application/ld+json">' . PHP_EOL;
             $script .= $json . PHP_EOL;

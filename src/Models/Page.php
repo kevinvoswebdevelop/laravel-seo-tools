@@ -126,6 +126,11 @@ class Page extends Model
         return $this->updated_at->format('c');
     }
 
+    public function getCreatedDate()
+    {
+        return $this->created_at->format('c');
+    }
+
     public function getChangeFrequency()
     {
         return $this->change_frequency;
