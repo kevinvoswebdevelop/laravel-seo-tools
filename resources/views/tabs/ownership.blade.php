@@ -73,28 +73,28 @@
 
     <h3>Review / Rating</h3>
     <div class="form-group row">
-        <label for="settings_review_rating_value" class="col-sm-3"><i class="fa fa-user-circle"></i> Average rating value </label>
+        <label for="settings_review_rating_value" class="col-sm-3">Average rating value </label>
         <input type="number" name="settings[review_rating_value][value]" class="form-control col-sm-9"
                id="settings_review_rating_value" value="{{$model->getValueByKey('review_rating_value')}}"
-               placeholder="e.g. 10" required>
+               placeholder="e.g. 10">
     </div>
     <div class="form-group row">
-        <label for="settings_review_count" class="col-sm-3"><i class="fa fa-user-circle"></i> Number of reviews/ratings </label>
+        <label for="settings_review_count" class="col-sm-3">Number of reviews/ratings </label>
         <input type="number" name="settings[review_count][value]" class="form-control col-sm-9"
                id="settings_review_count" value="{{$model->getValueByKey('review_count')}}"
-               placeholder="e.g. 100" required>
+               placeholder="e.g. 100">
     </div>
     <div class="form-group row">
-        <label for="settings_review_worst_rating" class="col-sm-3"><i class="fa fa-user-circle"></i> Minimal rating value </label>
+        <label for="settings_review_worst_rating" class="col-sm-3">Minimal rating value </label>
         <input type="number" name="settings[review_worst_rating][value]" class="form-control col-sm-9"
                id="settings_review_worst_rating" value="{{$model->getValueByKey('review_worst_rating')}}"
-               placeholder="e.g. 1" required>
+               placeholder="e.g. 1">
     </div>
     <div class="form-group row">
-        <label for="settings_review_best_rating" class="col-sm-3"><i class="fa fa-user-circle"></i> Maximal rating value </label>
+        <label for="settings_review_best_rating" class="col-sm-3">Maximal rating value </label>
         <input type="number" name="settings[review_best_rating][value]" class="form-control col-sm-9"
                id="settings_review_best_rating" value="{{$model->getValueByKey('review_best_rating')}}"
-               placeholder="e.g. 10" required>
+               placeholder="e.g. 10">
     </div>
 
     <br/><br/>
@@ -103,16 +103,16 @@
 
     @for($i = 0; $i < 10; $i++)
         <div class="form-group row">
-            <label for="settings_faq_question_{{$i}}" class="col-sm-3"><i class="fa fa-user-circle"></i> FAQ Question {{$i}} </label>
+            <label for="settings_faq_question_{{$i}}" class="col-sm-3">FAQ Question {{$i}} </label>
             <input type="text" name="settings[faq_question_{{$i}}][value]" class="form-control col-sm-9"
                    id="settings_faq_question_{{$i}}" value="{{$model->getValueByKey('faq_question_'.$i)}}"
-                   placeholder="e.g. How do I convert bitcoin to usd?" required>
+                   placeholder="e.g. How do I convert bitcoin to usd?">
         </div>
         <div class="form-group row">
-            <label for="settings_faq_answer_{{$i}}" class="col-sm-3"><i class="fa fa-user-circle"></i> FAQ Answer {{$i}} </label>
+            <label for="settings_faq_answer_{{$i}}" class="col-sm-3">FAQ Answer {{$i}} </label>
             <input type="text" name="settings[faq_answer_{{$i}}][value]" class="form-control col-sm-9"
                    id="settings_faq_answer_{{$i}}" value="{{$model->getValueByKey('faq_answer_'.$i)}}"
-                   placeholder="e.g. By using our converter found on almost every page" required>
+                   placeholder="e.g. By using our converter found on almost every page">
         </div>
     @endfor
 
