@@ -158,7 +158,10 @@ class SchemaBuilder
             ];
             $article["headline"] = $page->getTitle();
             $article["description"] = $page->getDescription();
-            $article["image"] = $page->pageImages()->first()->getSrc();
+            $image = $page->pageImages()->first();
+            if ($image) {
+                $article["image"] = $image->getSrc();
+            }
             $article["author"] = [
                 "@type" => $this->settings['ownership_type'],
                 "name" => $this->settings['ownership_name'],
