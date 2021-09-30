@@ -74,16 +74,16 @@ class Tag
      */
     protected function pageLevel()
     {
-        $siteTitle = $this->setting->getValueByKey('site_title');
-        if (!empty($siteTitle)) {
-            $siteTitle = ' | ' . $siteTitle;
-        }
-        $this->tags[] = '<title>' . $this->page->getTitle() . $siteTitle . '</title>';
-        $this->tags[] = '<link rel="canonical" href="' . $this->page->getCanonical() . '" />';
-        $description = $this->page->getDescription();
-        if (!empty($description)) {
-            $this->tags[] = '<meta name="description" content="' . $description . '" />';
-        }
+//        $siteTitle = $this->setting->getValueByKey('site_title');
+//        if (!empty($siteTitle)) {
+//            $siteTitle = ' | ' . $siteTitle;
+//        }
+//        //$this->tags[] = '<title>' . $this->page->getTitle() . $siteTitle . '</title>';
+//        //$this->tags[] = '<link rel="canonical" href="' . $this->page->getCanonical() . '" />';
+//        $description = $this->page->getDescription();
+//        if (!empty($description)) {
+//            $this->tags[] = '<meta name="description" content="' . $description . '" />';
+//        }
         return $this;
     }
 
@@ -92,16 +92,16 @@ class Tag
      */
     protected function robots()
     {
-        $roboxIndex = $this->setting->getValueByKey('robot_index');
-        $roboxFollow = $this->setting->getValueByKey('robot_follow');
-
-        $pageIndex = ($roboxIndex == 'noindex') ? 'noindex' : $this->page->robot_index;
-        $pageFollow = ($roboxFollow == 'nofollow') ? 'nofollow' : $this->page->robot_follow;
-
-        $pageIndex = empty($pageIndex) ? $roboxIndex : $pageIndex;
-        $pageFollow = empty($pageFollow) ? $roboxFollow : $pageFollow;
-
-        $this->tags[] = '<meta name="robots" content="' . $pageIndex . ',' . $pageFollow . '" />';
+//        $roboxIndex = $this->setting->getValueByKey('robot_index');
+//        $roboxFollow = $this->setting->getValueByKey('robot_follow');
+//
+//        $pageIndex = ($roboxIndex == 'noindex') ? 'noindex' : $this->page->robot_index;
+//        $pageFollow = ($roboxFollow == 'nofollow') ? 'nofollow' : $this->page->robot_follow;
+//
+//        $pageIndex = empty($pageIndex) ? $roboxIndex : $pageIndex;
+//        $pageFollow = empty($pageFollow) ? $roboxFollow : $pageFollow;
+//
+//        //$this->tags[] = '<meta name="robots" content="' . $pageIndex . ',' . $pageFollow . '" />';
         return $this;
     }
 
