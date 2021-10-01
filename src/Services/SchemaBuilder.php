@@ -52,13 +52,15 @@ class SchemaBuilder
             $ownershipGraph['@type'] = $this->settings['ownership_type'];
             $ownershipGraph['name'] = $this->settings['ownership_name'];
             $ownershipGraph['url'] = $this->settings['ownership_url'];
-            $ownershipGraph['aggregateRating'] = [
-                '@type' => 'AggregateRating',
-                'ratingValue' => $this->settings['review_rating_value'] ?? 5,
-                'reviewCount' => $this->settings['review_count'] ?? 100,
-                'worstRating' => $this->settings['review_worst_rating'] ?? 1,
-                'bestRating' => $this->settings['review_best_rating'] ?? 5
-            ];
+            if (!empty($this->settings['review_rating_value'])) {
+                $ownershipGraph['aggregateRating'] = [
+                    '@type' => 'AggregateRating',
+                    'ratingValue' => $this->settings['review_rating_value'] ?? 10,
+                    'reviewCount' => $this->settings['review_count'] ?? 112,
+                    'worstRating' => $this->settings['review_worst_rating'] ?? 1,
+                    'bestRating' => $this->settings['review_best_rating'] ?? 10
+                ];
+            }
             $ownershipGraph = $this->logo($ownershipGraph);
             if (!empty($this->settings['ownership_address'])) {
                 $ownershipGraph['address'] = $this->settings['ownership_address'];

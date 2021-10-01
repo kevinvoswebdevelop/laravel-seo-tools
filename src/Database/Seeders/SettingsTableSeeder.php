@@ -14,7 +14,27 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('seo_settings')->insert([
+        $faq = [];
+        for($i = 0; $i < 10; $i++) {
+            $faq[] = [
+                'label' => 'FAQ Question ' . $i,
+                'description' => '',
+                'key' => 'faq_question_'.$i,
+                'value' => '',
+                'status' => 'active',
+                'group' => 'ownership'
+            ];
+            $faq[] = [
+                'label' => 'FAQ Answer ' . $i,
+                'description' => '',
+                'key' => 'faq_answer_'.$i,
+                'value' => '',
+                'status' => 'active',
+                'group' => 'ownership'
+            ];
+        }
+
+        DB::table('seo_settings')->insert(array_merge($faq, [
             [
                 'label' => 'Site Title',
                 'description' => 'Site title must be below 70-80 words',
@@ -193,6 +213,42 @@ class SettingsTableSeeder extends Seeder
                 'status' => 'active',
                 'group' => 'ownership'
             ],
-        ]);
+
+
+
+
+            [
+                'label' => 'Review Rating',
+                'description' => '',
+                'key' => 'review_rating_value',
+                'value' => '',
+                'status' => 'active',
+                'group' => 'ownership'
+            ],
+            [
+                'label' => 'Review Count',
+                'description' => '',
+                'key' => 'review_count',
+                'value' => '',
+                'status' => 'active',
+                'group' => 'ownership'
+            ],
+            [
+                'label' => 'Worst Rating',
+                'description' => '',
+                'key' => 'review_worst_rating',
+                'value' => '',
+                'status' => 'active',
+                'group' => 'ownership'
+            ],
+            [
+                'label' => 'Best Rating',
+                'description' => '',
+                'key' => 'review_best_rating',
+                'value' => '',
+                'status' => 'active',
+                'group' => 'ownership'
+            ]
+        ]));
     }
 }
