@@ -100,7 +100,7 @@
     <br/><br/>
 
     <h3>FAQ</h3>
-    
+
     @for($i = 0; $i < 10; $i++)
         <div class="form-group row">
             <label for="settings_faq_question_{{$i}}" class="col-sm-3">FAQ Question {{$i}} </label>
