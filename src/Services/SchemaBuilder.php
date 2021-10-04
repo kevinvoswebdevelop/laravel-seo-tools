@@ -9,6 +9,7 @@ namespace SEO\Services;
 
 
 use Illuminate\Support\Collection;
+use Locale;
 use SEO\Models\Page;
 use SEO\Models\Setting;
 
