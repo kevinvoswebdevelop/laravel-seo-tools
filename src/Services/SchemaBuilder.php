@@ -83,7 +83,7 @@ class SchemaBuilder
 
         // Generate breadcrumbs
         $breadcrumbsGraph = $this->buildBreadcrumbs($page);
-        if (!empty($breadcrumbsGraphGraph)) {
+        if (!empty($breadcrumbsGraph)) {
             $graphs[] = $breadcrumbsGraph;
         }
 
