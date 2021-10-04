@@ -79,7 +79,11 @@ class SchemaBuilder
             $graphs[] = $articleGraph;
         }
 
-        // TODO: Breadcrumbs
+        // Generate breadcrumbs
+        $breadcrumbsGraph = $this->buildBreadcrumbs($page);
+        if (!empty($breadcrumbsGraphGraph)) {
+            $graphs[] = $breadcrumbsGraph;
+        }
 
         // Faq
         $faqGraph = $this->buildFaq($page);
@@ -191,12 +195,39 @@ class SchemaBuilder
      */
     private function buildBreadcrumbs(Page $page)
     {
-        $breadcrumbs = [];
+        /**
+         * {
+        "@context": "https://schema.org/",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "",
+            "item": ""
+        },{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "",
+            "item": ""
+        }]
+        }*/
+        $breadcrumbs = [
+            "@type" => "BreadcrumbList",
+            "itemListElement" => []
+        ];
         if (!empty($page->getTitle()) && !empty($page->getDescription()) && !empty($this->settings['ownership_type'])) {
-            $breadcrumbs = [];
-            // TODO: implement/depent on https://github.com/davejamesmiller/laravel-breadcrumbs
+            $breadcrumbs["itemListElement"][] = [
+                "position" => 1,
+                "name" => "Home",
+                "item" => "/"
+            ];
+            $breadcrumbs["itemListElement"][] = [
+                "position" => 1,
+                "name" => Locale::getDisplayName(Lang::locale(), Lang::locale()),
+                "item" => url('/'.Lang::locale())
+            ];
         }
-        return $breadcrumbs;
+        return count($breadcrumbs["itemListElement"]) ? $breadcrumbs : [];
     }
 
     /**
