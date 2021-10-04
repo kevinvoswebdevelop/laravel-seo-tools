@@ -221,7 +221,7 @@ class SchemaBuilder
             $breadcrumbs["itemListElement"][] = [
                 "position" => 1,
                 "name" => "Home",
-                "item" => "/"
+                "item" => url("/")
             ];
             $breadcrumbs["itemListElement"][] = [
                 "position" => 2,
