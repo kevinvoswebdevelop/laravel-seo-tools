@@ -224,7 +224,7 @@ class SchemaBuilder
                 "item" => "/"
             ];
             $breadcrumbs["itemListElement"][] = [
-                "position" => 1,
+                "position" => 2,
                 "name" => Locale::getDisplayName(Lang::locale(), Lang::locale()),
                 "item" => url('/'.Lang::locale())
             ];
