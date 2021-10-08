@@ -102,7 +102,7 @@ class PageGeneratorJob implements ShouldQueue
         $path = $link['link'];
         $object = isset($link['object']) ? $link['object'] : null;
         $objectId = isset($link['object_id']) ? $link['object_id'] : null;
-        $page = Page::firstOrNew(['object' => $object, 'object_id' => $objectId]);
+        $page = Page::firstOrNew(['path' => $path, 'object' => $object, 'object_id' => $objectId]);
 
         $page->path = $path;
         $page->canonical_url = $path;

@@ -45,7 +45,6 @@ class Seo
         $this->page = Page::whereIn('path', [trim($path, "/"), "/" . $path, url($path)])->first();
 
         if ($this->page) {
-
             if (config('seo.cache.driver') == 'file') {
                 $this->filePath = rtrim(config('seo.cache.storage'), "/") . '/' . $this->page->id . '.html';
 
@@ -127,6 +126,7 @@ class Seo
             }
 
             $page = Page::firstOrNew([
+                'path' => $data['path'],
                 'object' => get_class($model),
                 'object_id' => $model->getKey()
             ]);
