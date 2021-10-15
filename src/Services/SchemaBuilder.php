@@ -219,14 +219,20 @@ class SchemaBuilder
         ];
         if (!empty($page->getTitle()) && !empty($page->getDescription()) && !empty($this->settings['ownership_type'])) {
             $breadcrumbs["itemListElement"][] = [
+                "@type" => "ListItem",
                 "position" => 1,
-                "name" => "Home",
-                "item" => url("/")
+                "item" => [
+                    "@id" => url("/"),
+                    "name" => "Home"
+                ]
             ];
             $breadcrumbs["itemListElement"][] = [
+                "@type" => "ListItem",
                 "position" => 2,
-                "name" => Locale::getDisplayName(Lang::locale(), Lang::locale()),
-                "item" => url('/'.Lang::locale())
+                "item" => [
+                    "@id" => url('/'.Lang::locale()),
+                    "name" => Locale::getDisplayName(Lang::locale(), Lang::locale())
+                ]
             ];
         }
         return count($breadcrumbs["itemListElement"]) ? $breadcrumbs : [];
